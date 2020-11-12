@@ -7,6 +7,6 @@ namespace Descartes.DifferenceDeterminator
 {
     public interface IDifferenceDeterminatorResolver
     {
-        public string determineDifferences();
+        public DifferenceResponse determineDifferences(string leftValue, string rightValue);
     }
 }

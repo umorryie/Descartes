@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Descartes.DifferenceDeterminator;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -10,13 +11,9 @@ namespace Descartes.Entities
     [Table("DifferenceObject")]
     public class DifferenceObject
     {
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        [Key, DatabaseGenerated(DatabaseGeneratedOption.None)]
+        [Column("ID")]
         public int Id { get; set; }
-
-        [Key]
-        [Column("Index")]
-        [Index(IsUnique = true)]
-        public int Index { get; set; }
 
         [Column("DiffResult")]
         public string DiffResult { get; set; }

@@ -1,5 +1,8 @@
-﻿using Descartes.Repository;
+﻿using Descartes.DifferenceDeterminator;
+using Descartes.Entities;
+using Descartes.Repository;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -19,22 +22,38 @@ namespace Descartes.Controllers
             _differenceRepository = differenceRepository;
         }
 
-        [HttpPut("{id}/left")]
-        public String saveLeft()
+        [HttpPut]
+        [Route("{id}/left")]
+        public String saveLeft([FromBody] RequestDifferenceInputHelper requestInput, int id)
         {
-            return(_differenceRepository.saveObject("left"));
+            return _differenceRepository.saveObject("left", requestInput, id);
         }
 
-        [HttpPut("{id}/right")]
-        public String saveRight()
+        [HttpPut]
+        [Route("{id}/right")]
+        public String saveRight([FromBody] RequestDifferenceInputHelper requestInput, int id)
         {
-            return (_differenceRepository.saveObject("right"));
+            return _differenceRepository.saveObject("right", requestInput, id);
         }
 
-        [HttpGet("{id}")]
-        public String getDifferences()
+        [HttpGet]
+        [Route("{id}")]
+        public object getDifferences(int id)
         {
-            return (_differenceRepository.determineDifferences());
+            string differences = _differenceRepository.determineDifferences(id);
+            return JsonConvert.DeserializeObject<DifferenceResponse>(differences);
         }
+
+        [HttpGet]
+        [Route("getAllDatabaseContent")]
+        public List<DifferenceObject> getAllDatabaseContent()
+        {
+            return _differenceRepository.getAllDatabaseContent();
+        }
+    }
+
+    public class RequestDifferenceInputHelper
+    {
+        public string data { get; set; }
     }
 }
